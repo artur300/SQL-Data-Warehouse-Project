@@ -3,16 +3,39 @@
 ===============================================
         Create Database and Schemas
 ===============================================
+Script Purpose:
+	This script creates a new database named 'DataWarehouse' after checking if it already exists.
+	if the database exists, it is dropped and recreated. Additionally, the script sets up three schemes
+	within the database:'bronze','silver','gold'.
 
-
-
+WARNING:
+	Running this script will drop the entire 'DataWarehouse' database if it exists.
+	all data in the database will be permanetly deleted. Proceed with caution
+	and ensure you have proper backups before running this script
 
 
 Notes:
- ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+--------------------------------------------------------------------------------------
+WHAT IS A SCHEMA & WHY DO WE USE IT?
 
- this line disconnects all the current users that use the data base and rollbacks their commands and give control to a single witch is the one 
- that deletes this database
+A Schema is like a folder inside the database that groups related tables together.
+Full syntax: SCHEMA_NAME.TABLE_NAME (e.g., BRONZE.Orders vs. SILVER.Orders)
+
+WHY WE USE SCHEMAS:
+1. Organization: Keeps the database tidy by logical layers (e.g., Bronze, Silver, Gold).
+2. Name Reuse: Allows using the same table name at different pipeline stages (BRONZE.Users -> SILVER.Users).
+3. Access Control: Makes it easy to manage permissions (e.g., grant BI users access ONLY to Gold).
+4. Maintenance: Simplifies back-ups, optimization, and cleanup for specific data layers.
+---------------------------------------------------------------------------------------
+
+
+-- ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE:
+-- Switches the database to SINGLE_USER mode so only this script can access it.
+-- "WITH ROLLBACK IMMEDIATE" aggressively kicks out all connected users right away,
+-- rolls back their active transactions, and releases all locks so the database can be dropped cleanly.
+
+
+
 
 
 */
